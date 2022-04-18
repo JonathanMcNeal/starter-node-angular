@@ -21,8 +21,8 @@ function installPM2() {
 // transfers local project to the remote server
 function transferProjectToRemote(failed, successful) {
   return ssh.putDirectory(
-    '../hackathon-starter',
-    '/home/ubuntu/hackathon-starter-temp',
+    '.. starter-node-angular',
+    '/home/ubuntu starter-node-angular-temp',
     {
       recursive: true,
       concurrency: 1,
@@ -48,7 +48,7 @@ function transferProjectToRemote(failed, successful) {
 // creates a temporary folder on the remote server
 function createRemoteTempFolder() {
   return ssh.execCommand(
-    'rm -rf hackathon-starter-temp && mkdir hackathon-starter-temp',
+    'rm -rf starter-node-angular-temp && mkdir starter-node-angular-temp',
     {
       cwd: '/home/ubuntu',
     }
@@ -64,7 +64,7 @@ function stopRemoteServices() {
 
 // delete the project folder
 function removeProjectApp() {
-  return ssh.execCommand('rm -rf hackathon-starter', {
+  return ssh.execCommand('rm -rf starter-node-angular', {
     cwd: '/home/ubuntu',
   });
 }
@@ -72,7 +72,7 @@ function removeProjectApp() {
 // updates the project source on the server
 function updateRemoteApp() {
   return ssh.execCommand(
-    'mkdir hackathon-starter && cp -r hackathon-starter-temp/* hackathon-starter/ && rm -rf hackathon-starter-temp',
+    'mkdir starter-node-angular && cp -r starter-node-angular-temp/* starter-node-angular/ && rm -rf starter-node-angular-temp',
     {
       cwd: '/home/ubuntu',
     }
@@ -81,14 +81,14 @@ function updateRemoteApp() {
 
 function installNodeModules() {
   return ssh.execCommand(`npm install`, {
-    cwd: '/home/ubuntu/hackathon-starter',
+    cwd: '/home/ubuntu starter-node-angular',
   });
 }
 
 // restart mongodb and node services on the remote server
 function restartRemoteServices() {
   return ssh.execCommand(
-    'cd hackathon-starter && sudo service mongod start && pm2 start bin/www',
+    'cd starter-node-angular && sudo service mongod start && pm2 start bin/www',
     {
       cwd: '/home/ubuntu',
     }
@@ -112,11 +112,11 @@ function sshConnect() {
       return installPM2();
     })
     .then(function () {
-      console.log('Removing `hackathon-starter` folder.');
+      console.log('Removing  starter-node-angular` folder.');
       return removeProjectApp();
     })
     .then(function () {
-      console.log('Creating `hackathon-starter-temp` folder.');
+      console.log('Creating  starter-node-angular-temp` folder.');
       return createRemoteTempFolder();
     })
     .then(function (result) {
